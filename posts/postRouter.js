@@ -4,6 +4,8 @@ const {get, getById, update, remove} = require('./postDb');
 
 const router = express.Router();
 
+router.use('/:id', validatePostId);
+
 router.get('/', async(req, res) => {
   try {
     const posts = await get();
@@ -20,11 +22,10 @@ router.get('/', async(req, res) => {
 });
 
 router
-  .use(validatePostId)
   .route('/:id')
   .get(async ({post}, res) => {
     res
-      .status(201)
+      .status(200)
       .json(post);
   })
   .delete(async ({post}, res) => {
@@ -65,9 +66,10 @@ async function validatePostId(req, res, next) {
       });
     }
 
-    req.post = userFromId;
+    req.post = postFromId;
     next();
   } catch (error) {
+    console.error(error);
     res
       .status(500)
       .json({
