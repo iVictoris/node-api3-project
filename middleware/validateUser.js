@@ -6,11 +6,18 @@
  */
 
 const validateUser = (req, res, next) => {
+  console.log("Hello from validateUser");
+  const path = req.path.split("/");
+
+  if (path[path.length - 1] === "posts") {
+    next();
+    return;
+  }
+
   const { body } = req;
   const { name } = body;
 
   const bodyHasProps = Object.keys(body).length;
-
   if (!bodyHasProps) {
     res.status(400).json({
       message: "missing user data"
