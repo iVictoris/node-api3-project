@@ -1,11 +1,13 @@
 const express = require("express");
 
 const validateUserId = require("../middleware/validateUserId");
-const { get } = require("./userDb");
+const validateUser = require("../middleware/validateUser");
+const { get, insert } = require("./userDb");
 
 const router = express.Router();
 
 router.use("/:id*", validateUserId);
+router.use("/", validateUser);
 
 router
   .route("/")
@@ -15,12 +17,21 @@ router
       res.status(201).json(users);
     } catch (error) {}
   })
-  .post(async (req, res) => {});
+  .post(async (req, res) => {
+    const { body } = req;
+    try {
+      const userFromBody = body;
+      const user = await insert(userFromBody);
+      res
+        .status(201)
+        .json(user);
+    } catch (error) {}
+  });
 
 router
   .route("/:id/posts")
   .get(async ({ user }, res) => {
-    console.log(user)
+    console.log(user);
   })
   .post(async ({ user }, res) => {
     console.log(user);
@@ -29,9 +40,7 @@ router
 router
   .route("/:id")
   .get(async ({ user }, res) => {
-    res
-      .status(200)
-      .json(user);
+    res.status(200).json(user);
   })
   .delete(async ({ user }, res) => {
     console.log(user);
@@ -39,15 +48,5 @@ router
   .put(async ({ user }, res) => {
     console.log(user);
   });
-
-//custom middleware
-
-function validateUser(req, res, next) {
-  // do your magic!
-}
-
-function validatePost(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;
