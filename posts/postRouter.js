@@ -4,7 +4,7 @@ const {get, getById, update, remove} = require('./postDb');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
   try {
     const posts = await get();
     res
@@ -53,7 +53,7 @@ router
 
 // custom middleware
 
-function validatePostId(req, res, next) {
+async function validatePostId(req, res, next) {
   const {params: {id}} = req;
   try {
     const postFromId = await getById(id);
