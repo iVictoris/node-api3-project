@@ -22,8 +22,10 @@ router.get('/', (req, res) => {
 router
   .use(validatePostId)
   .route('/:id')
-  .get(async (req, res) => {
-
+  .get(async ({post}, res) => {
+    res
+      .status(201)
+      .json(post);
   })
   .delete(async (req, res) => {
   })
