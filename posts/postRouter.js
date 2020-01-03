@@ -27,7 +27,15 @@ router
       .status(201)
       .json(post);
   })
-  .delete(async (req, res) => {
+  .delete(async ({post}, res) => {
+    try {
+      await remove(post.id);
+      res.status(200).json(post);
+    } catch (error) {
+      res.status(500).json({
+        message: "server issue with post removal"
+      });
+    }
   })
   .put(async (req, res) => {
   })
