@@ -5,13 +5,25 @@ const {get, getById, update, remove} = require('./postDb');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  // do your magic!
+  try {
+    const posts = await get();
+    res
+      .status(201)
+      .json(posts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+      message: "Server issue retrieving posts"
+    });
+  }
 });
 
 router
   .use(validatePostId)
   .route('/:id')
   .get(async (req, res) => {
+
   })
   .delete(async (req, res) => {
   })
