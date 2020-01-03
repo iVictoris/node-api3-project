@@ -9,7 +9,7 @@ const validateUser = (req, res, next) => {
   const { body } = req;
   const { name } = body;
 
-  const bodyHasProps = Object.keys().length;
+  const bodyHasProps = Object.keys(body).length;
 
   if (!bodyHasProps) {
     res.status(400).json({
