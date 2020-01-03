@@ -1,40 +1,46 @@
-const express = require('express');
+const express = require("express");
+
+const validateUserId = require("../middleware/validateUserId");
+const { get } = require("./userDb");
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  // do your magic!
-});
+router.use("/:id*", validateUserId);
 
-router.post('/:id/posts', (req, res) => {
-  // do your magic!
-});
+router
+  .route("/")
+  .get(async (req, res) => {
+    try {
+      const users = await get();
+      res.status(201).json(users);
+    } catch (error) {}
+  })
+  .post(async (req, res) => {});
 
-router.get('/', (req, res) => {
-  // do your magic!
-});
+router
+  .route("/:id/posts")
+  .get(async ({ user }, res) => {
+    console.log(user)
+  })
+  .post(async ({ user }, res) => {
+    console.log(user);
+  });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
-});
-
-router.get('/:id/posts', (req, res) => {
-  // do your magic!
-});
-
-router.delete('/:id', (req, res) => {
-  // do your magic!
-});
-
-router.put('/:id', (req, res) => {
-  // do your magic!
-});
+router
+  .route("/:id")
+  .get(async ({ user }, res) => {
+    res
+      .status(200)
+      .json(user);
+  })
+  .delete(async ({ user }, res) => {
+    console.log(user);
+  })
+  .put(async ({ user }, res) => {
+    console.log(user);
+  });
 
 //custom middleware
-
-function validateUserId(req, res, next) {
-  // do your magic!
-}
 
 function validateUser(req, res, next) {
   // do your magic!
