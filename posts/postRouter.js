@@ -37,7 +37,18 @@ router
       });
     }
   })
-  .put(async (req, res) => {
+  .put(async ({body, post}, res) => {
+    const { text } = body;
+    try {
+      const updatedPost = { ...post, text };
+      await update(post.id, updatedPost);
+      res.status(201).json(updatedPost);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "server issue updating post"
+      });
+    }
   })
 
 // custom middleware
